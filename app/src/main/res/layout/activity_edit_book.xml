@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etTitle"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:padding="12dp"
+        android:background="@android:drawable/editbox_background"
+        android:hint="Book Title"/>
+
+    <EditText
+        android:id="@+id/etAuthor"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:padding="12dp"
+        android:background="@android:drawable/editbox_background"
+        android:hint="Author Name"/>
+
+    <EditText
+        android:id="@+id/etGenre"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:padding="12dp"
+        android:background="@android:drawable/editbox_background"
+        android:hint="Genre"/>
+
+    <Button
+        android:id="@+id/btnUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update Book"
+        android:backgroundTint="@color/purple_700"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>
