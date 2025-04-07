@@ -4,37 +4,75 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/colorBackground">  <!-- ✅ Fixed missing '>' -->
 
-    <EditText
-        android:id="@+id/etReview"
+    <!-- Review Input inside a MaterialCardView -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Write your review"
-        android:background="@android:color/white"
-        android:padding="8dp"
-        android:minHeight="100dp"/>
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="?attr/colorSurface"
+        android:padding="8dp">
 
-    <RatingBar
-        android:id="@+id/ratingBar"
+        <EditText
+            android:id="@+id/etReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write your review"
+            android:minHeight="100dp"
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Material Rating Bar -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numStars="5"
-        android:stepSize="0.5"
-        android:layout_marginTop="8dp" />
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
+        android:layout_marginTop="12dp"
+        android:padding="8dp">
 
-    <Button
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:isIndicator="false"
+            android:progressTint="?attr/colorAccent"
+            android:secondaryProgressTint="?attr/colorPrimary"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Material Submit Button -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSubmitReview"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit Review"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/teal_700"
-        android:textColor="@android:color/white"/>
+        android:layout_marginTop="12dp"
+        app:cornerRadius="12dp"
+        android:textColor="@android:color/white"
+        app:backgroundTint="?attr/colorPrimary"
+        app:rippleColor="?attr/colorSecondary"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <!-- RecyclerView inside NestedScrollView -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp"/>
+        android:fillViewport="true"
+        android:layout_marginTop="16dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:paddingBottom="8dp"/>
+    </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>

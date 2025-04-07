@@ -30,29 +30,36 @@ class AddBookActivity : AppCompatActivity() {
         val genre = binding.etBookGenre.text.toString().trim()
         val description = binding.etBookDescription.text.toString().trim()
 
+        // Validation: Ensure required fields are filled
         if (title.isEmpty() || author.isEmpty() || genre.isEmpty()) {
             Toast.makeText(this, "Title, Author, and Genre are required!", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val userId = auth.currentUser?.uid
-        if (userId == null) {
+        val currentUser = auth.currentUser
+        if (currentUser == null) {
             Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show()
             return
         }
 
         val bookId = UUID.randomUUID().toString()
-        val book = Book(bookId, title, author, genre, description)
+        val bookData = mapOf(
+            "bookId" to bookId,
+            "title" to title,
+            "author" to author,
+            "genre" to genre,
+            "description" to description,
+            "adminId" to currentUser.uid // Store uploader's ID
+        )
 
-        firestore.collection("users").document(userId)
-            .collection("books").document(bookId)
-            .set(book)
+        firestore.collection("books").document(bookId)
+            .set(bookData)
             .addOnSuccessListener {
                 Toast.makeText(this, "Book added successfully!", Toast.LENGTH_SHORT).show()
-                finish()
+                finish() // Close activity after success
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Failed to add book: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to add book: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
     }
 }

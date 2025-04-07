@@ -1,43 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp">
 
-    <!-- Book Title -->
-    <TextView
-        android:id="@+id/tvTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Book Title"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:padding="12dp"
+        android:orientation="vertical">
 
-    <!-- Author -->
-    <TextView
-        android:id="@+id/tvAuthor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Author Name"
-        android:textSize="14sp"/>
+        <!-- Title & More Options -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-    <!-- Genre -->
-    <TextView
-        android:id="@+id/tvGenre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Book Genre"
-        android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Book Title"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end"/>
 
-    <!-- Three-dot menu button -->
-    <ImageButton
-        android:id="@+id/btnMoreOptions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_more"
-        android:contentDescription="More Options"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_gravity="end"
-        android:padding="8dp" />
-</LinearLayout>
+            <!-- ✅ Fixed ImageButton with correct formatting -->
+            <ImageButton
+                android:id="@+id/btnMoreOptions"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/baseline_more_vert_24"
+                android:contentDescription="More Options"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"/>
+        </LinearLayout>
+
+        <!-- Author & Genre -->
+        <TextView
+            android:id="@+id/tvAuthor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Author Name"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:paddingTop="2dp"/>
+
+        <TextView
+            android:id="@+id/tvGenre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Book Genre"
+            android:textSize="14sp"
+            android:textColor="@color/black"/>
+
+        <!-- Star Rating & Review -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="6dp">
+
+            <!-- ⭐ Fixed RatingBar with missing attributes -->
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:isIndicator="true"
+                style="@style/Widget.AppCompat.RatingBar.Indicator"/>
+
+            <!-- Latest Review -->
+            <TextView
+                android:id="@+id/tvLatestReview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Latest Review"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:paddingStart="8dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

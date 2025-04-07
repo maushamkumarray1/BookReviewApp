@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorBackground">#121212</color>  <!-- Dark Mode Background -->
+    <color name="purple_200">#BB86FC</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+    <color name="black">#FFFFFF</color> <!-- White text for dark mode -->
+    <color name="white">#000000</color> <!-- Dark elements -->
+
+    <!-- Dark Mode Colors -->
+    <color name="light_blue">#37474F</color>
+    <color name="dark_blue">#0D47A1</color>
+    <color name="light_gray">#BDBDBD</color>
+    <color name="dark_gray">#424242</color>
+    <color name="red">#D32F2F</color>
+
+    <!-- Background and Text Colors -->
+    <color name="dark_background">#121212</color>  <!-- Fix Missing Resource -->
+    <color name="dark_textPrimary">#FFFFFF</color> <!-- Fix Missing Resource -->
+
+    <!-- Accent Colors -->
+    <color name="colorAccent">#FF80AB</color>
+</resources>

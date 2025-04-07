@@ -16,6 +16,7 @@ class EditBookActivity : AppCompatActivity() {
     private lateinit var btnUpdate: Button
 
     private var bookId: String? = null
+    private var bookAdminId: String? = null
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
     private val db = FirebaseFirestore.getInstance()
 
@@ -33,6 +34,12 @@ class EditBookActivity : AppCompatActivity() {
         etAuthor.setText(intent.getStringExtra("author"))
         etGenre.setText(intent.getStringExtra("genre"))
 
+        bookId?.let { id ->
+            db.collection("books").document(id).get().addOnSuccessListener { document ->
+                bookAdminId = document.getString("adminId")
+            }
+        }
+
         btnUpdate.setOnClickListener {
             updateBook()
         }
@@ -48,16 +55,15 @@ class EditBookActivity : AppCompatActivity() {
             return
         }
 
-        bookId?.let { id ->
-            userId?.let { uid ->
+        if (bookAdminId == userId) {
+            bookId?.let { id ->
                 val bookData = mapOf(
                     "title" to title,
                     "author" to author,
                     "genre" to genre
                 )
 
-                db.collection("users").document(uid)
-                    .collection("books").document(id)
+                db.collection("books").document(id)
                     .update(bookData)
                     .addOnSuccessListener {
                         Toast.makeText(this, "Book updated successfully!", Toast.LENGTH_SHORT).show()
@@ -67,6 +73,8 @@ class EditBookActivity : AppCompatActivity() {
                         Toast.makeText(this, "Update failed!", Toast.LENGTH_SHORT).show()
                     }
             }
+        } else {
+            Toast.makeText(this, "Only the book admin can update this book.", Toast.LENGTH_SHORT).show()
         }
     }
 }

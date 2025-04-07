@@ -1,19 +1,14 @@
 package com.example.myapplication
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.RatingBar
-import android.widget.TextView
+import android.view.*
+import android.widget.*
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
-
-
-
-
+import com.google.firebase.auth.FirebaseAuth
 
 class ReviewAdapter(
     private var reviewList: MutableList<Review>,
+    private val currentUserId: String,
     private val onEditClick: (Review) -> Unit,
     private val onDeleteClick: (Review) -> Unit
 ) : RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
@@ -21,9 +16,7 @@ class ReviewAdapter(
     class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvReviewText: TextView = itemView.findViewById(R.id.tvReviewText)
         val ratingBar: RatingBar = itemView.findViewById(R.id.ratingBarReview)
-
-        val btnEdit: Button = itemView.findViewById(R.id.btnEditReview)
-        val btnDelete: Button = itemView.findViewById(R.id.btnDeleteReview)
+        val menuButton: ImageView = itemView.findViewById(R.id.ivMenu)  // Three-dot menu
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
@@ -36,14 +29,40 @@ class ReviewAdapter(
         holder.tvReviewText.text = review.reviewText
         holder.ratingBar.rating = review.rating
 
-        holder.btnEdit.setOnClickListener { onEditClick(review) }
-        holder.btnDelete.setOnClickListener { onDeleteClick(review) }
+        // Show menu only if the user is the owner of the review
+        if (currentUserId == review.userId) {
+            holder.menuButton.visibility = View.VISIBLE
+            holder.menuButton.setOnClickListener { showPopupMenu(it, review) }
+        } else {
+            holder.menuButton.visibility = View.GONE
+        }
+    }
+
+    private fun showPopupMenu(view: View, review: Review) {
+        val popupMenu = PopupMenu(view.context, view)
+        popupMenu.menuInflater.inflate(R.menu.review_menu, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_edit -> {
+                    onEditClick(review)
+                    true
+                }
+                R.id.menu_delete -> {
+                    onDeleteClick(review)
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()
     }
 
     override fun getItemCount(): Int = reviewList.size
 
     fun updateList(newList: MutableList<Review>) {
-        reviewList = newList
+        reviewList.clear()
+        reviewList.addAll(newList)
         notifyDataSetChanged()
     }
 }

@@ -1,8 +1,9 @@
-package com.example.myapplication // Replace with your package name
+package com.example.myapplication
 
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -21,24 +22,28 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize Firebase
+        // ✅ Initialize Firebase
         FirebaseApp.initializeApp(this)
 
-        // ✅ Check if the correct theme is applied
+        // ✅ Apply theme before setting content view
         setTheme(R.style.Theme_MyApplication)
 
+        // ✅ Setup View Binding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         auth = Firebase.auth
 
-        // 🔹 Check for network connection before proceeding
+        // ✅ Check for internet connection before proceeding
         if (!isNetworkAvailable()) {
             showToast("No internet connection. Please check your network.")
-        } else {
-            checkUserLoginStatus()
+            return
         }
 
+        // ✅ Check if user is logged in
+        checkUserLoginStatus()
+
+        // ✅ Setup button listeners
         binding.btnLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
@@ -46,32 +51,53 @@ class MainActivity : AppCompatActivity() {
         binding.btnRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
-    }
 
-    /**
-     * 🔹 Check if user is already logged in.
-     */
-    private fun checkUserLoginStatus() {
-        if (auth.currentUser != null) {
-            Log.d("MainActivity", "User already logged in: ${auth.currentUser?.email}")
-            startActivity(Intent(this, DashboardActivity::class.java))
-            finish()
-        } else {
-            Log.d("MainActivity", "No user logged in.")
+        binding.btnLogout.setOnClickListener {
+            logoutUser()
         }
     }
 
     /**
-     * 🔹 Check if device has an active internet connection.
+     * ✅ Check if user is already logged in and redirect to Dashboard.
      */
-    private fun isNetworkAvailable(): Boolean {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork = connectivityManager.activeNetworkInfo
-        return activeNetwork != null && activeNetwork.isConnected
+    private fun checkUserLoginStatus() {
+        auth.currentUser?.let {
+            Log.d("MainActivity", "User already logged in: ${it.email}")
+            startActivity(Intent(this, DashboardActivity::class.java))
+            finish()  // Close MainActivity
+        }
     }
 
     /**
-     * 🔹 Display a toast message.
+     * ✅ Logout user and clear session.
+     */
+
+    private fun logoutUser() {
+        auth.signOut()
+        Toast.makeText(this, "Logout successful!", Toast.LENGTH_SHORT).show()
+
+        // Clear session data (Optional)
+        val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
+
+        // Redirect to login screen
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
+    }
+
+    /**
+     * ✅ Check if device has an active internet connection.
+     */
+
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+    }
+
+    /**
+     * ✅ Display a toast message.
      */
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

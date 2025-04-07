@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivityRegisterBinding
@@ -29,25 +30,24 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
 
-            if (email.isEmpty()) {
-                binding.etEmail.error = "Email is required"
+            if (!isValidEmail(email)) {
+                binding.etEmail.error = "Enter a valid email"
                 return@setOnClickListener
             }
 
-            if (password.isEmpty()) {
-                binding.etPassword.error = "Password is required"
+            if (!isValidPassword(password)) {
+                binding.passwordLayout.error = "Password must contain:\n• 8+ characters\n• 1 uppercase\n• 1 lowercase\n• 1 digit\n• 1 special character"
                 return@setOnClickListener
-            }
-
-            if (password.length < 6) {
-                binding.etPassword.error = "Password must be at least 6 characters"
-                return@setOnClickListener
+            } else {
+                binding.passwordLayout.error = null  // Clear error if valid
             }
 
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val user = auth.currentUser
+                        showToast("Registration successful! Please verify your email.")
+
                         user?.sendEmailVerification()?.addOnCompleteListener { emailTask ->
                             if (emailTask.isSuccessful) {
                                 showToast("Verification email sent. Please verify before login.")
@@ -70,5 +70,16 @@ class RegisterActivity : AppCompatActivity() {
     // Function to show toast messages
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    // Function to validate email format
+    private fun isValidEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    // Function to validate strong password
+    private fun isValidPassword(password: String): Boolean {
+        val passwordPattern = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#\$%^&+=!.,?]).{8,}\$"
+        return password.matches(passwordPattern.toRegex())
     }
 }

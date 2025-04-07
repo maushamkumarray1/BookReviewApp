@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <!-- Internet Permissions (Required for Firebase) -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -15,12 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
-        <activity
-            android:name="com.example.myapplication.EditBookActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ForgotPasswordActivity"
-            android:exported="false" /> <!-- Main Activity (Launcher Activity) -->
+
+        <!-- REMOVE: <activity android:name=".ic_more_vert" android:exported="false"/> -->
+
+        <activity android:name=".EditBookActivity" android:exported="false" />
+        <activity android:name=".ForgotPasswordActivity" android:exported="false" />
+
+        <!-- Main Activity (Launcher) -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -28,43 +30,30 @@
             android:theme="@style/Theme.MyApplication">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Dashboard Activity -->
-        <activity
-            android:name=".DashboardActivity"
-            android:exported="true"
-            android:label="Dashboard"
-            android:theme="@style/Theme.MyApplication" /> <!-- Search Books Activity -->
-        <activity
-            android:name=".ActivitySearchBooks"
-            android:exported="false" /> <!-- Review Activity -->
-        <activity
-            android:name=".ReviewActivity"
-            android:exported="false"
-            android:label="Review"
-            android:theme="@style/Theme.MyApplication" /> <!-- Add Book Activity -->
-        <activity
-            android:name=".AddBookActivity"
-            android:exported="false"
-            android:label="Add Book"
-            android:theme="@style/Theme.MyApplication" /> <!-- Login Activity -->
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true"
-            android:label="Login"
-            android:theme="@style/Theme.MyApplication" /> <!-- Register Activity -->
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="true"
-            android:label="Register"
-            android:theme="@style/Theme.MyApplication" /> <!-- Search Activity -->
-        <activity
-            android:name=".SearchActivity"
-            android:exported="true"
-            android:label="Search"
-            android:theme="@style/Theme.MyApplication" />
-    </application>
+        </activity>
 
+        <!-- Dashboard -->
+        <activity android:name=".DashboardActivity" android:exported="true" android:label="Dashboard" android:theme="@style/Theme.MyApplication" />
+
+        <!-- REMOVE OR FIX ActivitySearchBooks -->
+        <!-- <activity android:name=".ActivitySearchBooks" android:exported="false" /> -->
+
+        <!-- Review Page -->
+        <activity android:name=".ReviewActivity" android:exported="false" android:label="Review" android:theme="@style/Theme.MyApplication" />
+
+        <!-- Add Book -->
+        <activity android:name=".AddBookActivity" android:exported="false" android:label="Add Book" android:theme="@style/Theme.MyApplication" />
+
+        <!-- Login -->
+        <activity android:name=".LoginActivity" android:exported="true" android:label="Login" android:theme="@style/Theme.MyApplication" />
+
+        <!-- Register -->
+        <activity android:name=".RegisterActivity" android:exported="true" android:label="Register" android:theme="@style/Theme.MyApplication" />
+
+        <!-- REMOVE OR FIX SearchActivity -->
+        <!-- <activity android:name=".SearchActivity" android:exported="true" android:label="Search" android:theme="@style/Theme.MyApplication" /> -->
+
+    </application>
 </manifest>
